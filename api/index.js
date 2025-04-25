@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import userRouter from './routes/user.route.js'
 import authRouter from './routes/auth.route.js'
-
+import cookieParser from 'cookie-parser'
 dotenv.config()
 
 export const dbConnect = async () => {
@@ -20,6 +20,7 @@ dbConnect()
 const app = express()
 
 app.use(express.json())
+app.use(cookieParser())
 
 // Register routes before starting the server
 app.use("/api/user", userRouter)
