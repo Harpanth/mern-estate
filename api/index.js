@@ -25,6 +25,7 @@ app.use(cookieParser())
 // Register routes before starting the server
 app.use("/api/user", userRouter)
 app.use("/api/auth",authRouter)
+app.use("/api/listing",listingRouter);
 
 app.use((err,req,resizeBy,next) => {    
     const statusCode = err.statusCode || 500
