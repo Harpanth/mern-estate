@@ -1,6 +1,7 @@
 import { set } from 'mongoose';
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ListingItem from '../components/ListingItem';
 export default function Search() {
     const [sidebardata, setSidebardata] = React.useState({
         searchTerm: '',
@@ -13,7 +14,7 @@ export default function Search() {
     });
 
     const [loading, setLoading] = React.useState(false);
-    const [listing,setListing] = React.useState([]);
+    const [listings,setListings] = React.useState([]);
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const searchTermfromUrl = urlParams.get('searchTerm');
@@ -49,7 +50,7 @@ export default function Search() {
             const searchQuery = urlParams.toString();
             const res = await fetch(`/api/listing/get?${searchQuery}`);
             const data = await res.json();
-            setListing(data);
+            setListings(data);
             setLoading(false);
         }
 
@@ -190,6 +191,17 @@ export default function Search() {
                 </div>
                 <div className="">
                     <h1 className='text-3xl font-semibold border-b p-3 text-slate-700 mt-5'>Listing results:</h1>
+                </div>
+                <div className="p-7 flex flex-col gap-4">
+                    {!loading && listing.length===0 && (
+                        <p className='text-xl text-slate-700'>No listing found</p>
+                    )}
+                    {loading && (
+                        <p className='text-xl text-slate-700 text-center w-full'>Loading...</p>
+                    )}
+                    {
+                        !loading && listings && listings.map((listing) => <ListingItem key={listing._id} listing={listing}/>)
+                    }
                 </div>
             </div>
         )
